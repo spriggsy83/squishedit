@@ -1,0 +1,23 @@
+{
+  "name": "squishedit",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "server": "cd backend && nodemon app.js",
+    "client": "cd frontend && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spriggsy83/squishedit.git"
+  },
+  "author": "Andrew Spriggs",
+  "license": "SEE LICENSE IN LICENCE",
+  "bugs": {
+    "url": "https://github.com/spriggsy83/squishedit/issues"
+  },
+  "homepage": "https://github.com/spriggsy83/squishedit#readme",
+  "dependencies": {
+    "concurrently": "^4.1.2"
+  }
+}
