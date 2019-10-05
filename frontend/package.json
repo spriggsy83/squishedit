@@ -1,6 +1,7 @@
 {
   "name": "squishedit-client",
   "version": "0.0.1",
+  "description": "Lymphodema compression garment selector helper",
   "private": true,
   "dependencies": {
     "react": "^16.10.2",
@@ -27,5 +28,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spriggsy83/squishedit.git"
+  },
+  "author": "Andrew Spriggs",
+  "license": "SEE LICENSE IN LICENCE",
+  "bugs": {
+    "url": "https://github.com/spriggsy83/squishedit/issues"
+  },
+  "homepage": "https://github.com/spriggsy83/squishedit#readme"
 }

@@ -1,11 +1,12 @@
 {
   "name": "squishedit",
   "version": "0.0.1",
-  "description": "",
+  "description": "Lymphodema compression garment selector helper",
   "scripts": {
-    "server": "cd backend && nodemon app.js",
-    "client": "cd frontend && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "run:server": "cd backend && nodemon app.js",
+    "run:client": "cd frontend && npm start",
+    "dev": "run-p run:server run:client",
+    "install": "cd frontend && npm i && cd ../backend && npm i"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,6 @@
   },
   "homepage": "https://github.com/spriggsy83/squishedit#readme",
   "dependencies": {
-    "concurrently": "^4.1.2"
+    "npm-run-all": "^4.1.5"
   }
 }
