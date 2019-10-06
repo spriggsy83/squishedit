@@ -12,10 +12,15 @@ export const theme = createMuiTheme({
     secondary: { main: process.env.REACT_APP_SECOND_COLOUR || pink['A100'] },
   },
   overrides: {
+    MuiPaper: {
+      root: {
+        padding: defaultTheme.spacing(2),
+      },
+    },
     MuiContainer: {
       root: {
-        paddingTop: defaultTheme.spacing.unit * 2,
-        paddingBottom: defaultTheme.spacing.unit * 2,
+        paddingTop: defaultTheme.spacing(2),
+        paddingBottom: defaultTheme.spacing(2),
       },
     },
     MuiListItem: {
