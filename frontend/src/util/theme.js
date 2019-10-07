@@ -41,7 +41,7 @@ export const theme = createMuiTheme({
         },
       },
     },
-    MuiTableRow: {
+    /*    MuiTableRow: {
       root: {
         '&:hover': {
           backgroundColor:
@@ -49,7 +49,7 @@ export const theme = createMuiTheme({
             ' !important',
         },
       },
-    },
+    },*/
     MuiButtonBase: {
       root: {
         '&:hover': {

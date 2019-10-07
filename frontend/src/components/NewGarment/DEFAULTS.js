@@ -1,0 +1,26 @@
+const DEFAULTS = {
+  name: '',
+  limb: 'arm',
+  garmentType: '',
+  compressionLevel: '',
+  brand: '',
+  sizeLabel: '',
+  lengths: '',
+  notes: '',
+  aMin: '',
+  aMax: '',
+  bMin: '',
+  bMax: '',
+  cMin: '',
+  cMax: '',
+  dMin: '',
+  dMax: '',
+  eMin: '',
+  eMax: '',
+  fMin: '',
+  fMax: '',
+  gMin: '',
+  gMax: '',
+};
+
+export default DEFAULTS;
