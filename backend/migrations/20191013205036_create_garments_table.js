@@ -1,7 +1,9 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('garments', function(t) {
     t.integer('id').primary();
-    t.string('name').notNull();
+    t.string('name')
+      .unique()
+      .notNull();
     t.string('limb').notNull();
     t.string('type').notNull();
     t.string('compression_level').notNull();

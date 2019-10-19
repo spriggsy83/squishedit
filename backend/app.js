@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 var logger = require('morgan');
 const Errable = require('./errors');
+const config = require('./config');
 var app = express();
 
 app.use(logger('dev'));
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/garments', require('./routes/garments'));
 app.use('/', require('./routes/status'));
 
 // Handle errors
