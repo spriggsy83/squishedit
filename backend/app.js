@@ -1,7 +1,33 @@
 const express = require('express');
-const app = express();
-const port = 3001;
+const cors = require('cors');
+var logger = require('morgan');
+const Errable = require('./errors');
+var app = express();
 
-app.get('/', (req, res) => res.send('Hello from server!'));
+app.use(logger('dev'));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.use('/', require('./routes/status'));
+
+// Handle errors
+app.use((err, req, res, next) => {
+  if (!(err instanceof Errable)) {
+    err = Errable.E(
+      'Internal error',
+      Errable.Kinds.unexpected,
+      'app.js middleware',
+      err,
+    );
+  }
+  if (config.env === 'local') {
+    console.error(err.toString());
+    res.status(err.code()).end(err.toString());
+  } else {
+    console.error(err);
+    res.status(err.code()).json({ error: err.kind, details: err.details });
+  }
+});
+
+module.exports = app;
