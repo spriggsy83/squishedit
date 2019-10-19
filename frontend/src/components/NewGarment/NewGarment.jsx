@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { styled } from '@material-ui/styles';
 
 import FormFields from './FormFields';
-import DEFAULTS from './DEFAULTS';
+import { DEFAULTS } from '../../common/GARMENT-OPTS';
 import Schema from './schema';
 
 const TopPadButton = styled(Button)(({ theme }) => ({

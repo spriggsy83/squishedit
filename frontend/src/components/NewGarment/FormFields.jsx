@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ErrorMessage } from 'formik';
-import * as OPTS from './OPTS';
+import * as OPTS from '../../common/GARMENT-OPTS';
 
 const useStyles = makeStyles((theme) => ({
   flexRow: {
