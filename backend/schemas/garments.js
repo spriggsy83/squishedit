@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-module.exports = Joi.object().keys({
+exports.create = Joi.object().keys({
   name: Joi.string().required(),
   limb: Joi.string().required(),
   type: Joi.string().required(),
@@ -74,5 +74,24 @@ module.exports = Joi.object().keys({
     .allow(null),
   yMax: Joi.number()
     .greater(Joi.ref('yMin'))
+    .allow(null),
+});
+
+exports.fitQuery = Joi.object().keys({
+  margin: Joi.number()
+    .positive()
+    .allow(null)
+    .default(0),
+  measurements: Joi.array()
+    .items(
+      Joi.object({
+        point: Joi.string()
+          .required()
+          .valid('a', 'b', 'b1', 'c', 'c1', 'd', 'e', 'e1', 'f', 'g', 'y'),
+        value: Joi.number()
+          .positive()
+          .required(),
+      }),
+    )
     .allow(null),
 });

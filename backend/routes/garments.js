@@ -1,30 +1,43 @@
 'use strict';
 const router = require('express').Router();
 const model = require('../models/garments');
-const schema = require('../schemas/garments');
+const schemas = require('../schemas/garments');
 const querySchema = require('../schemas/queries');
 const Errable = require('../errors');
 
 router.get('/', async function(req, res, next) {
-  let valid = querySchema.validate({
+  let validParams = querySchema.validate({
     pagination: req.query.pagination || {},
     where: req.query.where || [],
     order: req.query.order || [],
   });
-  if (valid.error) {
+  if (validParams.error) {
     return next(
       Errable.E(
         'Failed to validate query params',
         Errable.Kinds.fmtError,
         'garments.get',
-        valid.error,
-        valid.error.details,
+        validParams.error,
+        validParams.error.details,
       ),
     );
   }
-  const { pagination, where, order } = valid.value;
+  const { pagination, where, order } = validParams.value;
+  let validFit = schemas.fitQuery.validate(req.query.fit || {});
+  if (validFit.error) {
+    return next(
+      Errable.E(
+        'Failed to validate fit query params',
+        Errable.Kinds.fmtError,
+        'garments.get',
+        validFit.error,
+        validFit.error.details,
+      ),
+    );
+  }
+  const fit = validFit.value;
   try {
-    const garments = await model.list(pagination, where, order);
+    const garments = await model.list(pagination, where, order, fit);
     return res.json(garments);
   } catch (e) {
     return next(
@@ -40,7 +53,7 @@ router.get('/', async function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   try {
-    const valid = schema.validate(req.body);
+    const valid = schemas.create.validate(req.body);
     if (valid.error) {
       return next(
         Errable.E(
