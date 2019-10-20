@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Lymphodema compression garment selector helper",
   "scripts": {
-    "run:server": "cd backend && nodemon app.js",
+    "run:server": "cd backend && nodemon ./bin/www",
     "run:client": "cd frontend && npm start",
     "dev": "run-p run:server run:client",
     "install": "cd frontend && npm i && cd ../backend && npm i"

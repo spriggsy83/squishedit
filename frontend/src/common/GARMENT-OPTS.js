@@ -14,7 +14,7 @@ const MPOINTS = ['a', 'b', 'b1', 'c', 'c1', 'd', 'e', 'e1', 'f', 'g', 'y'];
 const DEFAULTS = {
 	name: '',
 	limb: 'arm',
-	garmentType: 'sleeve with gauntlet',
+	type: 'sleeve with gauntlet',
 	compressionLevel: 'class 1',
 	brand: '',
 	sizeLabel: '',

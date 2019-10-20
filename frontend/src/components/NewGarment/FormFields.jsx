@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
   flexRow: {
     display: 'flex',
   },
+  flexCol: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+  },
   third: {
     width: '33%',
   },
@@ -53,6 +58,7 @@ export default function(props) {
         component={Typography}
         color="error"
         gutterBottom
+        className={classes.padLeft}
       />
       <div className={classes.flexRow}>
         <TextField
@@ -76,19 +82,13 @@ export default function(props) {
             );
           })}
         </TextField>
-        <ErrorMessage
-          name="limb"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
         <TextField
           variant="outlined"
           label="Type"
-          name="garmentType"
+          name="type"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.garmentType}
+          value={formik.values.type}
           required
           margin="normal"
           fullWidth
@@ -102,12 +102,6 @@ export default function(props) {
             );
           })}
         </TextField>
-        <ErrorMessage
-          name="garmentType"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
         <TextField
           variant="outlined"
           label="Compression Level"
@@ -129,66 +123,67 @@ export default function(props) {
             );
           })}
         </TextField>
-        <ErrorMessage
-          name="compressionLevel"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
       </div>
       <div className={classes.flexRow}>
-        <TextField
-          variant="outlined"
-          label="Brand"
-          name="brand"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.brand}
-          required
-          fullWidth
-          margin="normal"
-          className={classes.padRight}
-        />
-        <ErrorMessage
-          name="brand"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
-        <TextField
-          variant="outlined"
-          label="Size label"
-          name="sizeLabel"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.sizeLabel}
-          required
-          fullWidth
-          margin="normal"
-        />
-        <ErrorMessage
-          name="sizeLabel"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
-        <TextField
-          variant="outlined"
-          label="Available lengths"
-          name="lengths"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.lengths}
-          fullWidth
-          margin="normal"
-          className={classes.padLeft}
-        />
-        <ErrorMessage
-          name="lengths"
-          component={Typography}
-          color="error"
-          gutterBottom
-        />
+        <div className={classes.flexCol + ' ' + classes.padRight}>
+          <TextField
+            variant="outlined"
+            label="Brand"
+            name="brand"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.brand}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <ErrorMessage
+            name="brand"
+            component={Typography}
+            color="error"
+            gutterBottom
+            className={classes.padLeft}
+          />
+        </div>
+        <div className={classes.flexCol}>
+          <TextField
+            variant="outlined"
+            label="Size label"
+            name="sizeLabel"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.sizeLabel}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <ErrorMessage
+            name="sizeLabel"
+            component={Typography}
+            color="error"
+            gutterBottom
+            className={classes.padLeft}
+          />
+        </div>
+        <div className={classes.flexCol + ' ' + classes.padLeft}>
+          <TextField
+            variant="outlined"
+            label="Available lengths"
+            name="lengths"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.lengths}
+            fullWidth
+            margin="normal"
+          />
+          <ErrorMessage
+            name="lengths"
+            component={Typography}
+            color="error"
+            gutterBottom
+            className={classes.padLeft}
+          />
+        </div>
       </div>
       <TextField
         variant="outlined"
@@ -205,6 +200,7 @@ export default function(props) {
         component={Typography}
         color="error"
         gutterBottom
+        className={classes.padLeft}
       />
       <Table className={classes.table}>
         <TableHead>

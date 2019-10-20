@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
@@ -10,74 +10,80 @@ import { styled } from '@material-ui/styles';
 import FormFields from './FormFields';
 import { DEFAULTS } from '../../common/GARMENT-OPTS';
 import Schema from './schema';
+import { garments as api } from '../../api';
 
 const TopPadButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-class CreateForm extends React.Component {
-  state = {
-    error: null,
-    successMsg: null,
+const CreateForm = (props) => {
+  const [errorMsg, setError] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+
+  const submit = (values, actions) => {
+    let cleanedData = {};
+    for (let [key, value] of Object.entries(values)) {
+      const cleanedVal = value.trim();
+      if (cleanedVal.length) {
+        cleanedData[key] = cleanedVal;
+      }
+    }
+    api
+      .create(cleanedData)
+      .then(() => {
+        setSuccessMsg('Added ' + cleanedData.name);
+        actions.setSubmitting(false);
+      })
+      .catch((e) => {
+        setError(e.message);
+        actions.setSubmitting(false);
+      });
   };
 
-  submit = (values, actions) => {
-    console.log(values);
-    /*const data = this.props.cleanInputs
-      ? this.props.cleanInputs(values)
-      : values;
-
-    this.doPost(data, actions);*/
-  };
-
-  render() {
-    const { error, successMsg } = this.state;
-
-    return (
-      <>
-        <Formik
-          initialValues={this.props.initialValues || DEFAULTS}
-          validationSchema={Schema}
-          validateOnChange={false}
-          validateOnBlur={true}
-          onSubmit={this.submit}
-        >
-          {(thisForm) => (
-            <React.Fragment>
-              <FormFields form={thisForm} />
-              {this.props.onCancelButton && (
-                <TopPadButton
-                  variant="outlined"
-                  color="secondary"
-                  onClick={this.props.onCancelButton}
-                >
-                  Cancel
-                </TopPadButton>
-              )}
+  return (
+    <>
+      <Formik
+        initialValues={props.initialValues || DEFAULTS}
+        validationSchema={Schema}
+        validateOnChange={false}
+        validateOnBlur={true}
+        onSubmit={submit}
+      >
+        {(thisForm) => (
+          <React.Fragment>
+            <FormFields form={thisForm} />
+            {props.onCancelButton && (
               <TopPadButton
-                onClick={() => thisForm.submitForm()}
-                disabled={thisForm.isSubmitting}
+                variant="outlined"
                 color="secondary"
-                variant="contained"
+                onClick={props.onCancelButton}
               >
-                Save
+                Cancel
               </TopPadButton>
-              {thisForm.isSubmitting && <LinearProgress color="secondary" />}
-            </React.Fragment>
-          )}
-        </Formik>
-        {successMsg && !this.props.onCreate && (
-          <Typography variant="h6">{successMsg}</Typography>
+            )}
+            <TopPadButton
+              onClick={() => thisForm.submitForm()}
+              disabled={thisForm.isSubmitting}
+              color="secondary"
+              variant="contained"
+            >
+              Save
+            </TopPadButton>
+            {thisForm.isSubmitting && <LinearProgress color="secondary" />}
+          </React.Fragment>
         )}
-        {error && !this.props.onApiError && (
-          <Typography variant="h6" color="error">
-            {error}
-          </Typography>
-        )}
-      </>
-    );
-  }
-}
+      </Formik>
+      {successMsg && !props.onCreate && (
+        <Typography variant="h6">{successMsg}</Typography>
+      )}
+      {errorMsg && !props.onApiError && (
+        <Typography variant="h6" color="error">
+          {errorMsg}
+        </Typography>
+      )}
+    </>
+  );
+};
 
 CreateForm.propTypes = {
   initialValues: PropTypes.object,
