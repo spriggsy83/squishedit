@@ -6,10 +6,15 @@ const querySchema = require('../schemas/queries');
 const Errable = require('../errors');
 
 router.get('/', async function(req, res, next) {
+  console.log(typeof req.query.paging);
+  console.log(req.query.paging);
+  console.log(req.query.filter);
+  console.log(req.query.order);
+  console.log(req.query.fit);
   let validParams = querySchema.validate({
-    pagination: req.query.pagination || {},
-    where: req.query.where || [],
-    order: req.query.order || [],
+    paging: req.query.paging || {},
+    filter: req.query.filter || [],
+    order: req.query.order || {},
   });
   if (validParams.error) {
     return next(
@@ -22,7 +27,7 @@ router.get('/', async function(req, res, next) {
       ),
     );
   }
-  const { pagination, where, order } = validParams.value;
+  const { paging, filter, order } = validParams.value;
   let validFit = schemas.fitQuery.validate(req.query.fit || {});
   if (validFit.error) {
     return next(
@@ -37,7 +42,7 @@ router.get('/', async function(req, res, next) {
   }
   const fit = validFit.value;
   try {
-    const garments = await model.list(pagination, where, order, fit);
+    const garments = await model.list(paging, filter, order, fit);
     return res.json(garments);
   } catch (e) {
     return next(

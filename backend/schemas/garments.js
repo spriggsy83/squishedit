@@ -79,7 +79,7 @@ exports.create = Joi.object().keys({
 
 exports.fitQuery = Joi.object().keys({
   margin: Joi.number()
-    .positive()
+    .min(0)
     .allow(null)
     .default(0),
   measurements: Joi.array()

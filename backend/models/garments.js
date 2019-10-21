@@ -3,12 +3,12 @@ const Errable = require('../errors');
 
 const TABLENAME = 'garments';
 
-exports.list = function(pagination, wheres, orders, fit) {
+exports.list = function(paging, filters, order, fit) {
   // Setup query
   let query = knex.from(TABLENAME);
-  // Append where clauses
-  wheres.forEach((where) => {
-    query.where(where.field, where.op, where.value);
+  // Append filter where clauses
+  filters.forEach((filter) => {
+    query.where(filter.field, filter.op, filter.value);
   });
   // Append measurement fit where clauses
   if (fit.measurements) {
@@ -37,21 +37,21 @@ exports.list = function(pagination, wheres, orders, fit) {
     .clone()
     .count('* as count')
     .first();
-  // Append pagination details
-  query.offset(pagination.offset);
-  if (pagination.limit !== 'all') {
-    query.limit(pagination.limit);
+  // Append paging details
+  query.offset(paging.offset);
+  if (paging.limit !== 'all') {
+    query.limit(paging.limit);
   }
   // Append ordering details
-  orders.forEach((order) => {
-    query.orderBy(order.field, order.orientation);
-  });
+  if (order.field) {
+    query.orderBy(order.field, order.dir);
+  }
 
   return Promise.all([countQuery, query.select()])
     .then(([countRes, result]) => {
       return {
         data: result,
-        meta: { ...pagination, total: countRes.count },
+        meta: { ...paging, total: countRes.count },
       };
     })
     .catch((e) => {

@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const paginationSchema = Joi.object().keys({
+const pagingSchema = Joi.object().keys({
   offset: Joi.number()
     .integer()
     .min(0)
@@ -17,35 +17,27 @@ const paginationSchema = Joi.object().keys({
     .default(10),
 });
 
-const any = Joi.alternatives().try(
-  Joi.string(),
-  Joi.number(),
-  Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.number())),
-);
-
-const whereSchema = Joi.array().items(
+const filterSchema = Joi.array().items(
   Joi.object().keys({
     field: Joi.string().required(),
     op: Joi.string()
-      .valid('=', '>', '<', '>=', '<=', 'like', 'ilike', 'in')
+      .valid('=', 'ilike')
       .insensitive()
       .default('='),
-    value: any.required(),
+    value: Joi.alternatives().try(Joi.string(), Joi.number()),
   }),
 );
 
-const orderSchema = Joi.array().items(
-  Joi.object().keys({
-    field: Joi.string().required(),
-    orientation: Joi.string()
-      .valid('asc', 'desc')
-      .insensitive()
-      .default('asc'),
-  }),
-);
+const orderSchema = Joi.object().keys({
+  field: Joi.string().allow(null),
+  dir: Joi.string()
+    .valid('asc', 'desc')
+    .insensitive()
+    .default('asc'),
+});
 
 module.exports = Joi.object({
-  pagination: paginationSchema,
-  where: whereSchema,
+  paging: pagingSchema,
+  filter: filterSchema,
   order: orderSchema,
 });
