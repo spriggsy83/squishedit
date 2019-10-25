@@ -1,15 +1,15 @@
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { fetchGarments } from './util/actions';
+import { fetchGarments, updateFilter } from './util/actions';
 import reducer from './util/reducer';
-/*import SearchBox from './Components/SearchBox';
-import GarmentsTable from './Components/GarmentsTable';*/
+import FilterSelects from './Components/FilterSelects';
+import GarmentsTable from './Components/GarmentsTable';
 
 const INIT_STATE = {
   garments: [],
   measurements: [],
   margin: 0,
-  filters: [],
+  filters: {},
   hasLoaded: false,
   isLoading: false,
   error: null,
@@ -21,7 +21,7 @@ const Garments = (props) => {
     ...INIT_STATE,
     ...(props.initMeasures && { measurements: props.initMeasures }),
   });
-  const { garments, measurements, margin, filters, isLoading, error } = state;
+  const { garments, measurements, margin, filters, hasLoaded, error } = state;
 
   useEffect(() => {
     fetchGarments(dispatch, measurements, margin, filters);
@@ -33,11 +33,18 @@ const Garments = (props) => {
     }
   }, [error, onError]);
 
-  /*const doUpdate = (value, field) => {
-    updateQuery(dispatch, value, field);
-  };*/
-
-  return <>{JSON.stringify(garments, null, 1)}</>;
+  return (
+    <>
+      <FilterSelects
+        type={filters.type || 'any'}
+        compressionLevel={filters.compressionLevel || 'any'}
+        handleChange={(field, value) => {
+          updateFilter(dispatch, field, value);
+        }}
+      />
+      <GarmentsTable data={garments} />
+    </>
+  );
 };
 
 Garments.propTypes = {

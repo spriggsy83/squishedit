@@ -6,11 +6,6 @@ const querySchema = require('../schemas/queries');
 const Errable = require('../errors');
 
 router.get('/', async function(req, res, next) {
-  console.log(typeof req.query.paging);
-  console.log(req.query.paging);
-  console.log(req.query.filter);
-  console.log(req.query.order);
-  console.log(req.query.fit);
   let validParams = querySchema.validate({
     paging: req.query.paging || {},
     filter: req.query.filter || [],

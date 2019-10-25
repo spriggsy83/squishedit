@@ -32,8 +32,20 @@ export default function(state, action) {
           $set: payload.error,
         },
       });
+    case acts.FILTER:
+      if (payload.value === 'any') {
+        return update(state, {
+          filters: {
+            $unset: [payload.field],
+          },
+        });
+      }
+      return update(state, {
+        filters: {
+          $merge: { [payload.field]: payload.value },
+        },
+      });
     default:
       return state;
   }
 }
-
