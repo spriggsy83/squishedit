@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import pink from '@material-ui/core/colors/pink';
+import { pink, lightGreen, orange } from '@material-ui/core/colors';
 
 const defaultTheme = createMuiTheme();
 
@@ -10,17 +10,23 @@ export const theme = createMuiTheme({
   palette: {
     primary: { main: process.env.REACT_APP_PRIMARY_COLOUR || pink['A400'] },
     secondary: { main: process.env.REACT_APP_SECOND_COLOUR || pink['A100'] },
+    goodFit: {
+      main: process.env.REACT_APP_GOODFIT_COLOUR || lightGreen['A100'],
+    },
+    nearFit: {
+      main: process.env.REACT_APP_GOODFIT_COLOUR || orange['A100'],
+    },
   },
   overrides: {
     MuiPaper: {
       root: {
-        padding: defaultTheme.spacing(2),
+        padding: defaultTheme.spacing(1),
       },
     },
     MuiContainer: {
       root: {
-        paddingTop: defaultTheme.spacing(2),
-        paddingBottom: defaultTheme.spacing(2),
+        paddingTop: defaultTheme.spacing(1),
+        paddingBottom: defaultTheme.spacing(1),
       },
     },
     MuiListItem: {

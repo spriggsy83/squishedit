@@ -13,7 +13,7 @@ const fetchGarments = (dispatch, measurements, margin, filters) => {
     type: dispatches.LOADING,
   });
   api
-    .list(null, filtersToArray(filters), measurements, margin)
+    .list(null, filtersToArray(filters), measuresToArray(measurements), margin)
     .then((result) => {
       dispatch({
         type: dispatches.LOADED,
@@ -36,6 +36,14 @@ const filtersToArray = (filtersObj) => {
     filtersArr.push({ field: key, value: value });
   }
   return filtersArr;
+};
+
+const measuresToArray = (measuresObj) => {
+  let measuresArr = [];
+  for (let [key, value] of Object.entries(measuresObj)) {
+    measuresArr.push({ point: key, value: value });
+  }
+  return measuresArr;
 };
 
 const updateFilter = (dispatch, field, value) => {

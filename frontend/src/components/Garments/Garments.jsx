@@ -7,7 +7,7 @@ import GarmentsTable from './Components/GarmentsTable';
 
 const INIT_STATE = {
   garments: [],
-  measurements: [],
+  measurements: {},
   margin: 0,
   filters: {},
   hasLoaded: false,
@@ -42,7 +42,11 @@ const Garments = (props) => {
           updateFilter(dispatch, field, value);
         }}
       />
-      <GarmentsTable data={garments} />
+      <GarmentsTable
+        data={garments}
+        fitMode={true}
+        measurements={measurements}
+      />
     </>
   );
 };
