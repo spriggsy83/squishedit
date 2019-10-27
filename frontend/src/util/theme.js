@@ -38,7 +38,7 @@ export const theme = createMuiTheme({
         },
       },
     },
-    MUIDataTableBodyRow: {
+    /* MUIDataTableBodyRow: {
       root: {
         '&:hover': {
           backgroundColor:
@@ -47,7 +47,7 @@ export const theme = createMuiTheme({
         },
       },
     },
-    /*    MuiTableRow: {
+    MuiTableRow: {
       root: {
         '&:hover': {
           backgroundColor:
@@ -55,7 +55,7 @@ export const theme = createMuiTheme({
             ' !important',
         },
       },
-    },*/
+    },
     MuiButtonBase: {
       root: {
         '&:hover': {
@@ -64,7 +64,7 @@ export const theme = createMuiTheme({
             ' !important',
         },
       },
-    },
+    },*/
   },
 });
 

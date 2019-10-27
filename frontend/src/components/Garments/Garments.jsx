@@ -7,7 +7,7 @@ import GarmentsTable from './Components/GarmentsTable';
 
 const INIT_STATE = {
   garments: [],
-  measurements: {},
+  measures: {},
   margin: 0,
   filters: {},
   hasLoaded: false,
@@ -19,13 +19,13 @@ const Garments = (props) => {
   const { onClick, onError, initMeasures } = props;
   const [state, dispatch] = useReducer(reducer, {
     ...INIT_STATE,
-    ...(props.initMeasures && { measurements: props.initMeasures }),
+    ...(props.initMeasures && { measures: initMeasures }),
   });
-  const { garments, measurements, margin, filters, hasLoaded, error } = state;
+  const { garments, measures, margin, filters, error } = state;
 
   useEffect(() => {
-    fetchGarments(dispatch, measurements, margin, filters);
-  }, [measurements, margin, filters]);
+    fetchGarments(dispatch, measures, margin, filters);
+  }, [measures, margin, filters]);
 
   useEffect(() => {
     if (error && onError) {
@@ -45,7 +45,8 @@ const Garments = (props) => {
       <GarmentsTable
         data={garments}
         fitMode={true}
-        measurements={measurements}
+        measures={measures}
+        onClick={onClick}
       />
     </>
   );

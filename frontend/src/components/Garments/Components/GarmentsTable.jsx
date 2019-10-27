@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from 'mui-datatables';
-import { TableRow, TableCell } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import * as OPTS from '../../../common/GARMENT-OPTS';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,9 +23,15 @@ const useStyles = makeStyles((theme) => ({
     margin: -theme.spacing(2),
     padding: theme.spacing(2),
   },
+  goodFitExpanded: {
+    backgroundColor: theme.palette.goodFit.main,
+  },
+  nearFitExpanded: {
+    backgroundColor: theme.palette.nearFit.main,
+  },
 }));
 
-const getTableOpts = (fitMode, measurements) => {
+const getTableOpts = (fitMode, derivedFields) => {
   return {
     pagination: false,
     serverSide: true,
@@ -38,42 +44,30 @@ const getTableOpts = (fitMode, measurements) => {
     viewColumns: false,
     elevation: 0,
     expandableRows: true,
-    renderExpandableRow: renderExpandableFunc(fitMode, measurements),
+    renderExpandableRow: renderExpandableFunc(fitMode, derivedFields),
   };
 };
 
-const renderExpandableFunc = (fitMode, measurements) => {
-  //const classes = useStyles();
+const renderExpandableFunc = (fitMode, derivedFields) => {
   return (rowData, rowMeta) => {
-    console.log(rowData, rowMeta, fitMode, measurements);
-    /*if (fitMode) {
-      return (
-        <TableRow>
-          <TableCell colSpan={rowData.length} className={classes.root}>
-            Custom expandable row option. Data: {JSON.stringify(rowData)}
-          </TableCell>
-        </TableRow>
-      );
-    }*/
+    const derivedSetKey = fitMode ? 'expandedDetails' : 'expandedFits';
     return (
       <TableRow>
+        <TableCell colSpan={1} />
         <TableCell colSpan={rowData.length}>
-          Custom expandable row option. Data: {JSON.stringify(rowData)}
+          {derivedFields[derivedSetKey][rowMeta.dataIndex]}
         </TableCell>
       </TableRow>
     );
   };
 };
 
-const getColumns = (fitMode, measurements, margin, classes) => {
-  const noMeasures = Object.keys(measurements).length === 0;
+const getColumns = (fitMode, measures, classes) => {
+  const noMeasures = Object.keys(measures).length === 0;
   let cols = [
     {
       name: 'name',
       label: 'Name',
-      options: {
-        display: fitMode ? 'false' : 'true',
-      },
     },
     {
       name: 'type',
@@ -134,24 +128,28 @@ const getColumns = (fitMode, measurements, margin, classes) => {
       },
     });
     cols.push({
+      name: mpoint + 'Fit',
+      label: mpoint.toUpperCase(),
+      options: {
+        display: 'excluded',
+      },
+    });
+    cols.push({
       name: mpoint,
       label: mpoint.toUpperCase(),
       options: {
-        display:
-          fitMode && (measurements[mpoint] || noMeasures) ? 'true' : 'false',
+        display: fitMode && (measures[mpoint] || noMeasures) ? 'true' : 'false',
         customBodyRender: (value, tableMeta, updateValue) => {
-          const min = tableMeta.rowData[tableMeta.columnIndex - 2];
-          const max = tableMeta.rowData[tableMeta.columnIndex - 1];
-          let cellClass = null;
-          if (!noMeasures) {
-            const fitState = doesFit(min, max, measurements[mpoint], margin);
+          const min = tableMeta.rowData[tableMeta.columnIndex - 3];
+          const max = tableMeta.rowData[tableMeta.columnIndex - 2];
+          if (min && max) {
+            const fitState = tableMeta.rowData[tableMeta.columnIndex - 1];
+            let cellClass = null;
             if (fitState === 'Y') {
               cellClass = classes.goodFit;
             } else if (fitState === 'M') {
               cellClass = classes.nearFit;
             }
-          }
-          if (min && max) {
             return <div className={cellClass}>{min + ' - ' + max}</div>;
           }
           return value;
@@ -162,24 +160,83 @@ const getColumns = (fitMode, measurements, margin, classes) => {
   return cols;
 };
 
-const doesFit = (min, max, measure, margin) => {
-  if (measure >= min && measure <= max) {
-    return 'Y';
-  } else if (measure >= min - margin && measure <= max + margin) {
-    return 'M';
-  } else {
-    return 'N';
-  }
+const buildExpandedDetails = (row, classes) => {
+  return (
+    <Table>
+      <TableBody>
+        <TableRow>
+          <TableCell>{row.type}</TableCell>
+          <TableCell>{row.compressionLevel}</TableCell>
+          <TableCell>{row.brand}</TableCell>
+          <TableCell>{row.sizeLabel}</TableCell>
+          <TableCell>{row.lengths}</TableCell>
+          <TableCell>{row.notes}</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+};
+
+const buildExpandedFits = (row, measures, classes) => {
+  const mPoints = OPTS.MPOINTS.filter(
+    (mpoint) => row[mpoint + 'Min'] && row[mpoint + 'Max'],
+  );
+  return (
+    <Table>
+      <TableBody>
+        <TableRow>
+          {mPoints.map((mpoint, i) => {
+            const min = row[mpoint + 'Min'];
+            const max = row[mpoint + 'Max'];
+            const fitState = row[mpoint + 'Fit'];
+            if (min && max) {
+              let cellClass = null;
+              if (fitState === 'Y') {
+                cellClass = classes.goodFitExpanded;
+              } else if (fitState === 'M') {
+                cellClass = classes.nearFitExpanded;
+              }
+              return (
+                <TableCell key={i} className={cellClass}>
+                  {mpoint + ': ' + min + ' - ' + max}
+                </TableCell>
+              );
+            }
+            return <TableCell key={i} />;
+          })}
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+};
+
+const buildDerivedFields = (setDerived, data, measures, classes) => {
+  let expandedDetails = [];
+  let expandedFits = [];
+  data.forEach((row) => {
+    expandedDetails.push(buildExpandedDetails(row, classes));
+    expandedFits.push(buildExpandedFits(row, measures, classes));
+  });
+  setDerived({
+    expandedDetails: expandedDetails,
+    expandedFits: expandedFits,
+  });
 };
 
 const GarmentsTable = (props) => {
   const classes = useStyles();
-  const { data, fitMode, measurements, margin } = props;
+  const [derivedFields, setDerived] = useState({});
+  const { data, fitMode, measures } = props;
+
+  useEffect(() => {
+    buildDerivedFields(setDerived, data, measures, classes);
+  }, [data, measures, classes]);
+
   return (
     <MUIDataTable
       data={data}
-      options={getTableOpts(fitMode, measurements)}
-      columns={getColumns(fitMode, measurements, margin, classes)}
+      options={getTableOpts(fitMode, derivedFields)}
+      columns={getColumns(fitMode, measures, classes)}
     />
   );
 };
@@ -187,14 +244,13 @@ const GarmentsTable = (props) => {
 GarmentsTable.propTypes = {
   data: PropTypes.array.isRequired,
   fitMode: PropTypes.bool,
-  measurements: PropTypes.object,
-  margin: PropTypes.number,
+  measures: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 GarmentsTable.defaultProps = {
   fitMode: false,
-  measurements: {},
-  margin: 0,
+  measures: {},
 };
 
 export default GarmentsTable;
