@@ -6,9 +6,10 @@ import * as OPTS from '../../../common/GARMENT-OPTS';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   field: {
     width: '25%',

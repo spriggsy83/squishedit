@@ -6,7 +6,7 @@ export default function(props) {
   return (
     <Paper>
       <Typography variant="h3">Garments</Typography>
-      <Garments initMeasures={{ a: 23.5, c: 35, e: 34, e1: 33 }} />
+      <Garments initMeasures={{ a: 21, c: 15, d: 22, f: 32 }} />
     </Paper>
   );
 }

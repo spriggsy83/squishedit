@@ -47,6 +47,7 @@ const getTableOpts = (fitMode, derivedFields) => {
     download: false,
     print: false,
     filter: false,
+    sort: false,
     viewColumns: false,
     elevation: 0,
     expandableRows: true,
@@ -99,9 +100,6 @@ const getColumns = (fitMode, measures, classes) => {
     {
       name: 'sizeLabel',
       label: 'Size',
-      options: {
-        display: fitMode ? 'false' : 'true',
-      },
     },
     {
       name: 'lengths',
@@ -181,7 +179,6 @@ const buildExpandedDetails = (row, classes) => {
           <TableCell>Type</TableCell>
           <TableCell>Level</TableCell>
           <TableCell>Brand</TableCell>
-          <TableCell>Size</TableCell>
           <TableCell>Length(s)</TableCell>
           <TableCell>Construction</TableCell>
           <TableCell>Notes</TableCell>
@@ -192,7 +189,6 @@ const buildExpandedDetails = (row, classes) => {
           <TableCell>{row.type}</TableCell>
           <TableCell>{row.compressionLevel}</TableCell>
           <TableCell>{row.brand}</TableCell>
-          <TableCell>{row.sizeLabel}</TableCell>
           <TableCell>{row.lengths}</TableCell>
           <TableCell>{row.construction}</TableCell>
           <TableCell>{row.notes}</TableCell>
