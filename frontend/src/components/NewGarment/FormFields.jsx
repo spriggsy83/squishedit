@@ -20,7 +20,12 @@ const useStyles = makeStyles((theme) => ({
   flexCol: {
     display: 'flex',
     flexDirection: 'column',
-    flexGrow: 1,
+    flex: '1 1 33%',
+  },
+  flex2Cols: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '2 1 66%',
   },
   third: {
     width: '33%',
@@ -185,23 +190,46 @@ export default function(props) {
           />
         </div>
       </div>
-      <TextField
-        variant="outlined"
-        label="Notes"
-        name="notes"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.notes}
-        fullWidth
-        margin="normal"
-      />
-      <ErrorMessage
-        name="notes"
-        component={Typography}
-        color="error"
-        gutterBottom
-        className={classes.padLeft}
-      />
+      <div className={classes.flexRow}>
+        <div className={classes.flexCol + ' ' + classes.padRight}>
+          <TextField
+            variant="outlined"
+            label="Material/Construction"
+            name="construction"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.construction}
+            fullWidth
+            margin="normal"
+          />
+          <ErrorMessage
+            name="construction"
+            component={Typography}
+            color="error"
+            gutterBottom
+            className={classes.padLeft}
+          />
+        </div>
+        <div className={classes.flex2Cols}>
+          <TextField
+            variant="outlined"
+            label="Notes"
+            name="notes"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.notes}
+            fullWidth
+            margin="normal"
+          />
+          <ErrorMessage
+            name="notes"
+            component={Typography}
+            color="error"
+            gutterBottom
+            className={classes.padLeft}
+          />
+        </div>
+      </div>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>

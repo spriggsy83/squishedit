@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from 'mui-datatables';
-import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@material-ui/core';
 import * as OPTS from '../../../common/GARMENT-OPTS';
 
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +105,14 @@ const getColumns = (fitMode, measures, classes) => {
     },
     {
       name: 'lengths',
-      label: 'Avail. lengths',
+      label: 'Length(s)',
+      options: {
+        display: fitMode ? 'false' : 'true',
+      },
+    },
+    {
+      name: 'construction',
+      label: 'Construction',
       options: {
         display: fitMode ? 'false' : 'true',
       },
@@ -163,6 +176,17 @@ const getColumns = (fitMode, measures, classes) => {
 const buildExpandedDetails = (row, classes) => {
   return (
     <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Type</TableCell>
+          <TableCell>Level</TableCell>
+          <TableCell>Brand</TableCell>
+          <TableCell>Size</TableCell>
+          <TableCell>Length(s)</TableCell>
+          <TableCell>Construction</TableCell>
+          <TableCell>Notes</TableCell>
+        </TableRow>
+      </TableHead>
       <TableBody>
         <TableRow>
           <TableCell>{row.type}</TableCell>
@@ -170,6 +194,7 @@ const buildExpandedDetails = (row, classes) => {
           <TableCell>{row.brand}</TableCell>
           <TableCell>{row.sizeLabel}</TableCell>
           <TableCell>{row.lengths}</TableCell>
+          <TableCell>{row.construction}</TableCell>
           <TableCell>{row.notes}</TableCell>
         </TableRow>
       </TableBody>
@@ -183,6 +208,13 @@ const buildExpandedFits = (row, measures, classes) => {
   );
   return (
     <Table>
+      <TableHead>
+        <TableRow>
+          {mPoints.map((mpoint, i) => (
+            <TableCell key={i}>{mpoint.toUpperCase()}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
       <TableBody>
         <TableRow>
           {mPoints.map((mpoint, i) => {
@@ -198,7 +230,7 @@ const buildExpandedFits = (row, measures, classes) => {
               }
               return (
                 <TableCell key={i} className={cellClass}>
-                  {mpoint + ': ' + min + ' - ' + max}
+                  {min + ' - ' + max}
                 </TableCell>
               );
             }

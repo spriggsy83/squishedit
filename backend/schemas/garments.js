@@ -4,6 +4,7 @@ exports.create = Joi.object().keys({
   name: Joi.string().required(),
   limb: Joi.string().required(),
   type: Joi.string().required(),
+  construction: Joi.string().allow(null),
   compressionLevel: Joi.string().required(),
   brand: Joi.string().required(),
   sizeLabel: Joi.string().required(),

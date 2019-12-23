@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
     t.string('limb').notNull();
     t.string('type').notNull();
     t.string('compression_level').notNull();
+    t.string('construction').nullable();
     t.string('brand').notNull();
     t.string('size_label').notNull();
     t.string('lengths').nullable();
