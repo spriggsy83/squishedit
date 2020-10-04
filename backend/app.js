@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/garments', require('./routes/garments'));
+app.use('/measurements', require('./routes/measurements'));
 app.use('/', require('./routes/status'));
 
 // Handle errors
