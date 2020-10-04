@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Lymphodema compression garment selector helper",
   "scripts": {
-    "run:server": "cd backend && nodemon ./bin/www",
+    "run:server": "cd backend && npm run dev",
     "run:client": "cd frontend && npm start",
     "dev": "run-p run:server run:client",
     "install": "cd frontend && npm i && cd ../backend && npm i"
@@ -20,5 +20,17 @@
   "homepage": "https://github.com/spriggsy83/squishedit#readme",
   "dependencies": {
     "npm-run-all": "^4.1.5"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "semi": true,
+    "requirePragma": false,
+    "proseWrap": "preserve",
+    "arrowParens": "always"
   }
 }
